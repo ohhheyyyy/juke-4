@@ -1,0 +1,76 @@
+<html>
+  <head>
+    <script src="node_modules/angular/angular.js"></script>
+    <script src="client.js"></script>
+  </head>
+  <body ng-app="kittygogo">
+    <hr>
+    <h1>Fund Catrepreneurs</h1>
+    <h4>Everybody wants to be a cat</h4>
+    <hr>
+    <div ng-controller="NavbarController">
+      <div>
+        Width:<input ng-model="width" />
+        Height:<input ng-model="height" />
+        <div>
+          <img ng-src="http://placekitten.com/g/{{ height }}/{{ width }}">
+        </div>
+      </div>
+      <span>Welcome {{ username }}</span>
+      <hr>
+      <pre>{{ paymentForm | json }}</pre>
+      <h3>Checkout</h3>
+      <button ng-click="logScope()">Log the scope</button>
+      
+      <form name="paymentForm">
+
+        <div>
+          <p style="color:red;" ng-show="paymentForm.numberField.$error.minlength">Too short!</p>
+          <p style="color:red;" ng-show="paymentForm.numberField.$error.required">Field is required!</p>
+          <span>Number:</span>
+          <input type="text" name="numberField" ng-minlength="16" ng-model="ccn" required/>
+        </div>
+
+        <div>
+          <p style="color:red;" ng-show="paymentForm.typeField.$invalid">Problem with type field!</p>
+          <span>Type:</span>
+          <select name="typeField" ng-model="cctype" required>
+            <option>Visa</option>
+            <option>Mastercard</option>
+            <option>Amex</option>
+            <option>Fullstack</option>
+          </select>
+        </div>
+
+        <button ng-click="logScope()" ng-show="paymentForm.$valid">SUBMIT</button>
+        <button ng-show="paymentForm.$invalid" disabled>FIX PROBLEMS</button>
+
+      </form>
+      <hr>
+    </div>
+    <div ng-controller="MainController">
+      <pre>{{ user | json }}</pre>
+      <input type="text" ng-model="user.info.amount" />
+      <hr>
+      <div ng-repeat="kitten in kittenProjects">
+        <div ng-click="kitten.showDetails = !kitten.showDetails">
+          {{ kitten.name }}: {{ kitten.project }}
+        </div>
+        <div>
+          Should show? {{ kitten.showDetails }}
+        </div>
+        <div ng-show="kitten.showDetails">
+          <div>$ {{ kitten.raised }} / {{ kitten.target }}</div>
+          <img src="{{ kitten.photo }}">
+          <div>{{ kitten.description }}</div>
+          <!-- update raised -->
+
+          <button ng-click="addFiveToAmount(kitten)">
+            Add ${{ user.info.amount }}
+          </button>
+        </div>
+        <hr>
+      </div>
+    </div>
+  </body>
+</html>
